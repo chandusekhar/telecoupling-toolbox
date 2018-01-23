@@ -16,14 +16,14 @@ arcpy.env.overwriteOutput = True
 
 #Set whether tool is licensed
 def isLicensed():
-    try:
-        if arcpy.CheckExtension("Spatial") == "Available":
-            arcpy.CheckOutExtension("Spatial")
-        else:
-            raise Exception
-    except:
-        return False
-    return True
+	try:
+		if arcpy.CheckExtension("Spatial") == "Available":
+			arcpy.CheckOutExtension("Spatial")
+		else:
+			raise Exception
+	except:
+		return False
+	return True
 
 def autoIncrement(pInterval = 1):
 	global rec
@@ -36,7 +36,7 @@ def nutritionMetrics(AOI, year, maleStature, femaleStature, mosaicDB):
 	arcpy.CreateFolder_management(arcpy.env.scratchFolder, "intOutput")
 	arcpy.AddMessage("scratch folder was created")
 	os.chdir(os.path.join(arcpy.env.scratchFolder, "intOutput"))
-	arcpy.AddMessage("Calculating nutrition metrics. This may take several minutes depending on size of AOI... ")
+	arcpy.AddMessage("Calculating nutrition metrics.")
 	
 	#Export only images consistent with the Year and Area of Interest
 	query = "Year = " + year
@@ -66,7 +66,7 @@ def nutritionMetrics(AOI, year, maleStature, femaleStature, mosaicDB):
 	femaleStatureInt = float(femaleStature)
 	OID_List = []
 	for r in rasterList:
-		OID = regex.findall(r)[0]
+		OID = regex.findall(os.path.basename(r))[0]
 		
 		#The appropriate equation is added to each age group and a running tally of LLER is kept.
 		#The female 00-04 age group
